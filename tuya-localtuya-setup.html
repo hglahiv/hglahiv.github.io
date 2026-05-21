@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tuya + LocalTuya Setup Guide | Home Lab Wiki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2128;
+      --border: #30363d;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --warn: #f0883e;
+      --danger: #f85149;
+      --text: #c9d1d9;
+      --text-dim: #8b949e;
+      --text-bright: #f0f6fc;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--surface);
+    }
+
+    .breadcrumb {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 0.4rem; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      max-width: 1100px;
+      margin: 0 auto;
+      gap: 0;
+    }
+
+    aside {
+      border-right: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-title {
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      border-left: 2px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .sidebar-nav a:hover {
+      color: var(--text-bright);
+      border-left-color: var(--accent);
+      background: var(--surface2);
+    }
+
+    .sidebar-nav .section-label {
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 1.2rem 0 0.4rem 0.5rem;
+    }
+
+    main {
+      padding: 2.5rem 3rem;
+      max-width: 800px;
+    }
+
+    .page-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-tag {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-bright);
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-meta {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .page-meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+    section { margin-bottom: 2.5rem; }
+
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2 .icon { font-size: 1rem; }
+
+    h3 {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 1.2rem 0 0.5rem;
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    p { margin-bottom: 0.75rem; color: var(--text); }
+
+    ul, ol {
+      margin-left: 1.5rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    ul li, ol li { margin-bottom: 0.35rem; }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .callout {
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      border-left: 3px solid;
+      font-size: 0.9rem;
+    }
+
+    .callout-warn { background: rgba(240, 136, 62, 0.08); border-color: var(--warn); }
+    .callout-danger { background: rgba(248, 81, 73, 0.08); border-color: var(--danger); }
+    .callout-info { background: rgba(88, 166, 255, 0.08); border-color: var(--accent); }
+    .callout-success { background: rgba(63, 185, 80, 0.08); border-color: var(--accent2); }
+
+    .callout-title {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+
+    .callout-warn .callout-title { color: var(--warn); }
+    .callout-danger .callout-title { color: var(--danger); }
+    .callout-info .callout-title { color: var(--accent); }
+    .callout-success .callout-title { color: var(--accent2); }
+
+    .steps { list-style: none; counter-reset: steps; margin-left: 0; }
+
+    .steps li {
+      counter-increment: steps;
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.75rem;
+      align-items: start;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .steps li:last-child { border-bottom: none; }
+
+    .steps li::before {
+      content: counter(steps);
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-weight: 600;
+      font-size: 0.8rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .step-content strong {
+      display: block;
+      color: var(--text-bright);
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .step-content p {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      margin: 0 0 0.5rem 0;
+    }
+
+    .step-content ul {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      margin-top: 0.3rem;
+    }
+
+    .step-content ul li { margin-bottom: 0.25rem; }
+
+    .step-content .step-note {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--warn);
+      margin-top: 0.3rem;
+    }
+
+    code {
+      font-family: var(--mono);
+      font-size: 0.82em;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.4em;
+      color: var(--accent2);
+    }
+
+    pre {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin: 1rem 0;
+    }
+
+    .spec-table td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .spec-table td:first-child {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      width: 40%;
+      white-space: nowrap;
+    }
+
+    .spec-table td:last-child { color: var(--text-bright); }
+
+    .trouble-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .trouble-card-header {
+      padding: 0.75rem 1rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--warn);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .trouble-card-body {
+      padding: 1rem;
+      font-size: 0.88rem;
+    }
+
+    .trouble-card-body p { margin-bottom: 0.5rem; color: var(--text-dim); }
+    .trouble-card-body strong { color: var(--text-bright); }
+
+    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 3rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-left: 240px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="breadcrumb">
+    <a href="index.html">hglahiv.github.io</a>
+    <span>›</span>
+    <a href="#">wiki</a>
+    <span>›</span>
+    <a href="#">home-lab</a>
+    <span>›</span>
+    tuya-localtuya-setup
+  </div>
+</header>
+
+<div class="layout">
+
+  <aside>
+    <div class="sidebar-title">On this page</div>
+    <nav class="sidebar-nav">
+      <a href="#overview">Overview</a>
+      <a href="#prerequisites">Prerequisites</a>
+      <a href="#step-1">1. Re-pair in Smart Life</a>
+      <a href="#step-2">2. Tuya Developer Project</a>
+      <a href="#step-3">3. Get Device ID &amp; Local Key</a>
+      <a href="#step-4">4. Find Device IP</a>
+      <a href="#step-5">5. Add Device in LocalTuya</a>
+      <a href="#step-6">6. Verify</a>
+      <a href="#step-7">7. Automation (Optional)</a>
+      <a href="#troubleshooting">Troubleshooting</a>
+      <a href="#notes">Notes</a>
+
+      <div class="section-label">Related</div>
+      <a href="index.html">Wiki Home</a>
+      <a href="govee-matter-pairing.html">Govee Matter Pairing</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="page-header">
+      <div class="page-tag">Home Lab Wiki · Smart Home</div>
+      <h1>Tuya + LocalTuya Setup Guide</h1>
+      <div class="page-meta">
+        <span>🔌 Example device: ELEGRP PQR20</span>
+        <span>🔗 Protocol: LocalTuya (no cloud)</span>
+        <span>📅 Last verified: May 2026</span>
+      </div>
+      <div class="tags">
+        <span class="tag">tuya</span>
+        <span class="tag">localtuya</span>
+        <span class="tag">home-assistant</span>
+        <span class="tag">smart-plug</span>
+        <span class="tag">elegrp</span>
+        <span class="tag">iot-vlan</span>
+      </div>
+    </div>
+
+    <!-- Overview -->
+    <section id="overview">
+      <h2><span class="icon">📋</span> Overview</h2>
+      <p>This guide covers adding a Tuya-based WiFi smart plug (e.g. ELEGRP PQR20) to Home Assistant using the <strong>LocalTuya</strong> integration for fully local control with no cloud dependency.</p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">ℹ️ Why LocalTuya</div>
+        LocalTuya communicates directly with the device on your LAN — no cloud round-trip after setup. The native Tuya cloud integration is an easier alternative if local control isn't required.
+      </div>
+    </section>
+
+    <!-- Prerequisites -->
+    <section id="prerequisites">
+      <h2><span class="icon">✅</span> Prerequisites</h2>
+      <ul>
+        <li>Home Assistant with HACS installed</li>
+        <li><a href="https://github.com/rospogrigio/localtuya">LocalTuya</a> installed via HACS</li>
+        <li>The plug paired and online in its native app (e.g. ELEGRP Home, Smart Life, Tuya Smart)</li>
+        <li>A free <a href="https://platform.tuya.com">Tuya IoT Platform</a> developer account</li>
+      </ul>
+    </section>
+
+    <!-- Step 1 -->
+    <section id="step-1">
+      <h2><span class="icon">📱</span> Step 1: Re-pair the Plug in Smart Life</h2>
+      <p>If the plug is currently paired in a white-label app (e.g. ELEGRP Home), you need to move it to the <strong>Smart Life</strong> app so it surfaces in the Tuya developer portal.</p>
+
+      <p><strong style="color: var(--text-bright)">Smart Life</strong> is the official Tuya-branded consumer app (published by Tuya Inc). Many smart home devices ship with white-label versions of this app under different names — but Smart Life is the one that integrates cleanly with the Tuya developer portal.</p>
+
+      <ol class="steps">
+        <li>
+          <div class="step-content">
+            <strong>Reset the plug</strong>
+            <p>Hold the button until it blinks rapidly.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Download the Smart Life app</strong>
+            <p>
+              <a href="https://apps.apple.com/us/app/smart-life-smart-living/id1115101477">iOS</a> /
+              <a href="https://play.google.com/store/apps/details?id=com.tuya.smartlife">Android</a> —
+              then create or log in to an account.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Pair the plug in Smart Life</strong>
+            <p>Add it as a new device.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="callout callout-info">
+        <div class="callout-title">ℹ️ Why?</div>
+        White-label Tuya apps (like ELEGRP Home) don't reliably expose device credentials in the developer portal. The official Smart Life app does.
+      </div>
+    </section>
+
+    <!-- Step 2 -->
+    <section id="step-2">
+      <h2><span class="icon">☁️</span> Step 2: Set Up a Tuya Developer Project</h2>
+
+      <div class="callout callout-success">
+        <div class="callout-title">✅ Already complete for the GHouse setup</div>
+        The Tuya developer project "Elegrp" is created, APIs are subscribed, and the Smart Life account is linked. These steps are here for reference if you ever need to recreate it.
+      </div>
+
+      <ol class="steps">
+        <li>
+          <div class="step-content">
+            <strong>Log in at platform.tuya.com</strong>
+            <p><a href="https://platform.tuya.com">platform.tuya.com</a></p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Create a Cloud Project</strong>
+            <p>Cloud → Development → Create Cloud Project</p>
+            <ul>
+              <li>Region: <strong style="color: var(--text-bright)">Western America</strong> (for US devices)</li>
+              <li>Industry: Smart Home</li>
+              <li>Development Method: Smart Home</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Confirm Service APIs are subscribed</strong>
+            <ul>
+              <li>IoT Core</li>
+              <li>Smart Home Basic Service</li>
+              <li>Authorization Token Management</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Link the Smart Life app account</strong>
+            <p>Devices → Link App Account → Add App Account, then scan the QR code using the Smart Life app (Me → Scan).</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Verify devices appear</strong>
+            <p>Your devices should now show up under the project's <strong>Devices</strong> tab.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Step 3 -->
+    <section id="step-3">
+      <h2><span class="icon">🔑</span> Step 3: Get the Device ID and Local Key via tinytuya</h2>
+      <p>The Tuya developer portal doesn't always surface the Local Key in the UI. Use the <code>tinytuya</code> Python tool to pull it directly from the cloud API.</p>
+
+      <p>On your <strong>Mac</strong> (recommended — Python and pip are simpler on macOS than Windows). Open Terminal:</p>
+
+      <pre><code>pip3 install tinytuya
+python3 -m tinytuya wizard</code></pre>
+
+      <p>When prompted enter:</p>
+      <ul>
+        <li><strong style="color: var(--text-bright)">API Key</strong>: your project's Access ID (Overview tab in portal)</li>
+        <li><strong style="color: var(--text-bright)">API Secret</strong>: your project's Access Secret (Overview tab)</li>
+        <li><strong style="color: var(--text-bright)">Region</strong>: <code>us</code></li>
+      </ul>
+
+      <p>Skip the local network scan if the device is on an IoT VLAN (UDP broadcasts won't cross VLANs). The wizard pulls credentials from the cloud regardless.</p>
+
+      <p>When complete, open the generated <code>devices.json</code> file and find your device. Note the:</p>
+      <ul>
+        <li><code>id</code> → Device ID</li>
+        <li><code>key</code> → Local Key</li>
+        <li><code>version</code> → Protocol version (typically <code>3.3</code> or <code>3.4</code>)</li>
+      </ul>
+
+      <div class="callout callout-warn">
+        <div class="callout-title">⚠️ Important</div>
+        The Local Key changes every time you reset and re-pair the device. If you ever reset the plug, re-run the tinytuya wizard to get a fresh key.
+      </div>
+    </section>
+
+    <!-- Step 4 -->
+    <section id="step-4">
+      <h2><span class="icon">🌐</span> Step 4: Find the Device IP</h2>
+      <p>Check your router/UniFi controller for the plug's local IP address. If it's on an IoT VLAN, note the VLAN IP (e.g. <code>192.168.5.x</code>).</p>
+    </section>
+
+    <!-- Step 5 -->
+    <section id="step-5">
+      <h2><span class="icon">➕</span> Step 5: Add the Device in LocalTuya</h2>
+      <ol class="steps">
+        <li>
+          <div class="step-content">
+            <strong>Open LocalTuya configuration in HA</strong>
+            <p>Settings → Devices &amp; Services → LocalTuya → Configure → Add Device</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Enter device credentials</strong>
+            <ul>
+              <li><strong style="color: var(--text-bright)">Host</strong>: local IP address from Step 4</li>
+              <li><strong style="color: var(--text-bright)">Device ID</strong>: from <code>devices.json</code> (also visible in the Tuya developer portal under your project's Devices tab)</li>
+              <li><strong style="color: var(--text-bright)">Local Key</strong>: from <code>devices.json</code> (portal does not reliably show this — use tinytuya)</li>
+              <li><strong style="color: var(--text-bright)">Protocol Version</strong>: from <code>devices.json</code> — use <code>3.4</code></li>
+            </ul>
+            <div class="step-note">⚠️ The UI defaults to <code>3.3</code> — make sure to change it if your device is <code>3.4</code>.</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Add a Switch entity</strong>
+            <ul>
+              <li><strong style="color: var(--text-bright)">Platform</strong>: Switch</li>
+              <li><strong style="color: var(--text-bright)">DPS ID</strong>: <code>1</code> (single outlet) or <code>1</code> and <code>2</code> (dual outlet)</li>
+              <li><strong style="color: var(--text-bright)">Friendly name</strong>: e.g. <code>Landscape Lighting</code></li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Step 6 -->
+    <section id="step-6">
+      <h2><span class="icon">🩺</span> Step 6: Verify</h2>
+      <p>The plug should now appear as a switch entity in HA (e.g. <code>switch.landscape_lighting</code>). Test on/off from the HA UI to confirm local control is working.</p>
+
+      <div class="callout callout-success">
+        <div class="callout-title">✅ Success</div>
+        Switch responds instantly with no cloud round-trip. Pull the WAN cable and toggling still works — confirming local control.
+      </div>
+    </section>
+
+    <!-- Step 7 -->
+    <section id="step-7">
+      <h2><span class="icon">⏰</span> Step 7: Create an Automation (Optional)</h2>
+      <p>Example: turn on at sunset (15 min early), off at sunrise.</p>
+      <pre><code>alias: Landscape Lighting
+description: Turn on landscape lights at sunset, off at sunrise
+mode: single
+trigger:
+  - platform: sun
+    event: sunset
+    offset: "-00:15:00"
+    id: sunset
+  - platform: sun
+    event: sunrise
+    id: sunrise
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: sunset
+        sequence:
+          - action: switch.turn_on
+            target:
+              entity_id: switch.landscape_lighting
+      - conditions:
+          - condition: trigger
+            id: sunrise
+        sequence:
+          - action: switch.turn_off
+            target:
+              entity_id: switch.landscape_lighting</code></pre>
+    </section>
+
+    <!-- Troubleshooting -->
+    <section id="troubleshooting">
+      <h2><span class="icon">🔧</span> Troubleshooting</h2>
+
+      <div class="trouble-card">
+        <div class="trouble-card-header">⚡ Device not found in Tuya portal</div>
+        <div class="trouble-card-body">
+          <p>Use the Smart Life app instead of the white-label app, then re-pair the device. White-label apps don't reliably expose credentials in the portal.</p>
+        </div>
+      </div>
+
+      <div class="trouble-card">
+        <div class="trouble-card-header">⚡ LocalTuya won't connect</div>
+        <div class="trouble-card-body">
+          <p>Confirm the IP is correct (check UniFi). Try protocol <code>3.3</code> instead of <code>3.4</code> — different firmware revisions use different versions.</p>
+        </div>
+      </div>
+
+      <div class="trouble-card">
+        <div class="trouble-card-header">⚡ Entities not responding</div>
+        <div class="trouble-card-body">
+          <p>The Local Key may be stale — re-run the tinytuya wizard after any re-pair to pull a fresh key, then update the LocalTuya config.</p>
+        </div>
+      </div>
+
+      <div class="trouble-card">
+        <div class="trouble-card-header">⚡ tinytuya scan shows "No IP found"</div>
+        <div class="trouble-card-body">
+          <p>The device is on an IoT VLAN — skip the scan. The keys are pulled from the Tuya cloud regardless of local network reachability.</p>
+        </div>
+      </div>
+
+      <div class="trouble-card">
+        <div class="trouble-card-header">⚡ QR code goes invalid immediately</div>
+        <div class="trouble-card-body">
+          <p>Expected — the QR code in the developer portal is single-use. Check the portal for the linked account; if it shows up, you're good.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Notes -->
+    <section id="notes">
+      <h2><span class="icon">📖</span> Notes</h2>
+      <ul>
+        <li>LocalTuya communicates directly with the device on your LAN — no cloud dependency after setup.</li>
+        <li>Place the plug on the <strong>IoT VLAN</strong> (VLAN 5) and ensure HA can reach that subnet.</li>
+        <li>The native Tuya cloud integration is an easier alternative if local control isn't required.</li>
+      </ul>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  hglahiv.github.io · Home Lab Wiki · Last updated May 2026 · <a href="#" style="color: var(--accent);">Edit on GitHub</a>
+</footer>
+
+</body>
+</html>
