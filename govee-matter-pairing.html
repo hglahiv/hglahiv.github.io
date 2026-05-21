@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Govee Matter Pairing Guide | Home Lab Wiki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2128;
+      --border: #30363d;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --warn: #f0883e;
+      --danger: #f85149;
+      --text: #c9d1d9;
+      --text-dim: #8b949e;
+      --text-bright: #f0f6fc;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--surface);
+    }
+
+    .breadcrumb {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    .breadcrumb a { color: var(--accent); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 0.4rem; }
+
+    /* Layout */
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      max-width: 1100px;
+      margin: 0 auto;
+      gap: 0;
+    }
+
+    /* Sidebar */
+    aside {
+      border-right: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-title {
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+
+    .sidebar-nav a {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      border-left: 2px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .sidebar-nav a:hover {
+      color: var(--text-bright);
+      border-left-color: var(--accent);
+      background: var(--surface2);
+    }
+
+    .sidebar-nav .section-label {
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 1.2rem 0 0.4rem 0.5rem;
+    }
+
+    /* Main content */
+    main {
+      padding: 2.5rem 3rem;
+      max-width: 800px;
+    }
+
+    .page-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-tag {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-bright);
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-meta {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .page-meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+    /* Sections */
+    section { margin-bottom: 2.5rem; }
+
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    h2 .icon { font-size: 1rem; }
+
+    h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin: 1.2rem 0 0.5rem;
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.78rem;
+    }
+
+    p { margin-bottom: 0.75rem; color: var(--text); }
+
+    /* Callout boxes */
+    .callout {
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      border-left: 3px solid;
+      font-size: 0.9rem;
+    }
+
+    .callout-warn {
+      background: rgba(240, 136, 62, 0.08);
+      border-color: var(--warn);
+    }
+
+    .callout-danger {
+      background: rgba(248, 81, 73, 0.08);
+      border-color: var(--danger);
+    }
+
+    .callout-info {
+      background: rgba(88, 166, 255, 0.08);
+      border-color: var(--accent);
+    }
+
+    .callout-success {
+      background: rgba(63, 185, 80, 0.08);
+      border-color: var(--accent2);
+    }
+
+    .callout-title {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+
+    .callout-warn .callout-title { color: var(--warn); }
+    .callout-danger .callout-title { color: var(--danger); }
+    .callout-info .callout-title { color: var(--accent); }
+    .callout-success .callout-title { color: var(--accent2); }
+
+    /* Steps */
+    .steps { list-style: none; counter-reset: steps; }
+
+    .steps li {
+      counter-increment: steps;
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.75rem;
+      align-items: start;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .steps li:last-child { border-bottom: none; }
+
+    .steps li::before {
+      content: counter(steps);
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-weight: 600;
+      font-size: 0.8rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .step-content strong {
+      display: block;
+      color: var(--text-bright);
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .step-content p {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      margin: 0;
+    }
+
+    .step-content .step-note {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--warn);
+      margin-top: 0.3rem;
+    }
+
+    /* Code */
+    code {
+      font-family: var(--mono);
+      font-size: 0.82em;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.4em;
+      color: var(--accent2);
+    }
+
+    pre {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+
+    /* Device specs table */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin: 1rem 0;
+    }
+
+    .spec-table td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .spec-table td:first-child {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      width: 40%;
+      white-space: nowrap;
+    }
+
+    .spec-table td:last-child { color: var(--text-bright); }
+
+    /* Troubleshooting cards */
+    .trouble-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .trouble-card-header {
+      padding: 0.75rem 1rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--warn);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .trouble-card-body {
+      padding: 1rem;
+      font-size: 0.88rem;
+    }
+
+    .trouble-card-body p { margin-bottom: 0.5rem; color: var(--text-dim); }
+    .trouble-card-body strong { color: var(--text-bright); }
+
+    /* Health check commands */
+    .cmd-block {
+      margin: 0.75rem 0;
+    }
+
+    .cmd-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+    }
+
+    /* Tags */
+    .tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 3rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-left: 240px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="breadcrumb">
+    <a href="index.html">hglahiv.github.io</a>
+    <span>›</span>
+    <a href="#">wiki</a>
+    <span>›</span>
+    <a href="#">home-lab</a>
+    <span>›</span>
+    govee-matter-pairing
+  </div>
+</header>
+
+<div class="layout">
+
+  <aside>
+    <div class="sidebar-title">On this page</div>
+    <nav class="sidebar-nav">
+      <a href="#overview">Overview</a>
+      <a href="#prerequisites">Prerequisites</a>
+      <a href="#device-info">Device Info</a>
+      <a href="#pairing-steps">Pairing Steps</a>
+      <a href="#troubleshooting">Troubleshooting</a>
+      <a href="#health-checks">Health Checks</a>
+      <a href="#background">Background</a>
+
+      <div class="section-label">Related</div>
+      <a href="#">Matter Integration</a>
+      <a href="#">UDM SE Network</a>
+      <a href="#">Home Assistant</a>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="page-header">
+      <div class="page-tag">Home Lab Wiki · Matter Devices</div>
+      <h1>Govee Matter Pairing Guide</h1>
+      <div class="page-meta">
+        <span>📦 Model: H6022</span>
+        <span>🔗 Protocol: Matter over WiFi</span>
+        <span>📅 Last verified: May 2026</span>
+      </div>
+      <div class="tags">
+        <span class="tag">govee</span>
+        <span class="tag">matter</span>
+        <span class="tag">home-assistant</span>
+        <span class="tag">apple-home</span>
+        <span class="tag">ipv6</span>
+        <span class="tag">udm-se</span>
+      </div>
+    </div>
+
+    <!-- Overview -->
+    <section id="overview">
+      <h2><span class="icon">📋</span> Overview</h2>
+      <p>This guide documents the confirmed working process for pairing a Govee H6022 lamp to Home Assistant via Matter, using Apple Home as the primary commissioner and HA as a secondary controller via Multi-Admin.</p>
+
+      <div class="callout callout-warn">
+        <div class="callout-title">⚠️ Hard-won knowledge</div>
+        This procedure took two days to figure out. The order of operations matters — deviating from these steps (especially the power sequence and network requirements) will result in pairing failures.
+      </div>
+    </section>
+
+    <!-- Prerequisites -->
+    <section id="prerequisites">
+      <h2><span class="icon">✅</span> Prerequisites</h2>
+
+      <h3>Network Requirements</h3>
+      <p>Matter over WiFi requires IPv6 SLAAC to complete commissioning. Before starting, verify:</p>
+      <ul style="margin-left: 1.5rem; font-size: 0.88rem; color: var(--text-dim);">
+        <li style="margin-bottom: 0.4rem">UDM SE is handing out IPv6 addresses on the Default VLAN</li>
+        <li style="margin-bottom: 0.4rem">Other Default VLAN clients show IPv6 addresses in UniFi</li>
+        <li style="margin-bottom: 0.4rem">Phone must connect to <code>92108-2g</code> (Default VLAN 2.4GHz — NOT IoT SSID)</li>
+      </ul>
+
+      <div class="callout callout-info">
+        <div class="callout-title">ℹ️ Why 2.4GHz Default VLAN specifically</div>
+        Matter's BLE → WiFi handoff during commissioning requires the phone and device to land on the same network segment. The IoT SSID is also 2.4GHz but commissioning fails on it. Use the main Default VLAN 2.4GHz SSID only.
+      </div>
+
+      <h3>App Requirements</h3>
+      <ul style="margin-left: 1.5rem; font-size: 0.88rem; color: var(--text-dim);">
+        <li style="margin-bottom: 0.4rem"><strong style="color: var(--text-bright)">Govee Home app</strong> — must be installed AND logged in (not just open). Login triggers the BLE pairing flow.</li>
+        <li style="margin-bottom: 0.4rem"><strong style="color: var(--text-bright)">Apple Home app</strong> — used as the primary Matter commissioner</li>
+        <li style="margin-bottom: 0.4rem"><strong style="color: var(--text-bright)">HA Companion app</strong> — for the Multi-Admin secondary pairing</li>
+      </ul>
+    </section>
+
+    <!-- Device Info -->
+    <section id="device-info">
+      <h2><span class="icon">💡</span> Device Info</h2>
+      <table class="spec-table">
+        <tr><td>Model</td><td>Govee H6022 Floor Lamp</td></tr>
+        <tr><td>Protocol</td><td>Matter over WiFi (2.4GHz)</td></tr>
+        <tr><td>HA Integration</td><td>Matter (not Govee cloud)</td></tr>
+        <tr><td>Entity ID</td><td><code>light.govee_lamp</code></td></tr>
+        <tr><td>Factory Reset</td><td>Hold power + click − (minus) 4 times</td></tr>
+        <tr><td>Known Quirk</td><td>Must be powered ON before factory reset. Lamp must be unplugged, replugged, then reset — not reset while already running.</td></tr>
+        <tr><td>IPv6 behavior</td><td>Sometimes slow to get IPv6 after factory reset. If blinking rapidly, it's in commissioning mode waiting to be paired — this is normal.</td></tr>
+      </table>
+    </section>
+
+    <!-- Pairing Steps -->
+    <section id="pairing-steps">
+      <h2><span class="icon">🔗</span> Pairing Steps</h2>
+
+      <div class="callout callout-warn">
+        <div class="callout-title">⏱️ Time limit</div>
+        After factory reset, you have approximately 15 minutes to complete commissioning before the window closes. Have all apps ready before you start.
+      </div>
+
+      <ol class="steps">
+        <li>
+          <div class="step-content">
+            <strong>Unplug the lamp</strong>
+            <p>Physically unplug from the wall. Wait 5 seconds.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Plug the lamp back in</strong>
+            <p>Let it fully boot — wait for it to stop its startup light sequence.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Factory reset</strong>
+            <p>Hold the power button on the lamp, then click the − (minus) button 4 times while holding power. The lamp will flash to confirm the reset.</p>
+            <div class="step-note">⚠️ Order matters: power must be on first, THEN reset. Resetting while unplugged doesn't work.</div>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Open Govee Home app and confirm logged in</strong>
+            <p>Don't just open it — verify you're actually logged into your account. The BLE pairing flow requires an active session.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Connect phone to <code>92108-2g</code></strong>
+            <p>Default VLAN 2.4GHz network only. Not IoT, not 5GHz.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Get the Matter QR code from the Govee app</strong>
+            <p>In Govee Home → find the lamp → Settings → Matter → Show QR Code. This is the Matter-specific code, not the generic setup QR on the bottom of the lamp.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Add to Apple Home</strong>
+            <p>Apple Home → + → Add Accessory → scan the QR code from the Govee app. Follow the prompts. The lamp should commission to Apple Home successfully.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-content">
+            <strong>Add to HA via Multi-Admin</strong>
+            <p>In Apple Home → long-press the lamp → <strong>Turn on Pairing Mode</strong>. This opens a new commissioning window and provides a new pairing code.</p>
+            <p>Then in HA Companion app → Settings → Devices & Services → Add Integration → Matter → enter the pairing code from Apple Home.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="callout callout-success">
+        <div class="callout-title">✅ Success indicators</div>
+        The lamp appears in HA under the Matter integration. State updates are near-instant when physically toggling the lamp. Entity ID: <code>light.govee_lamp</code>
+      </div>
+    </section>
+
+    <!-- Troubleshooting -->
+    <section id="troubleshooting">
+      <h2><span class="icon">🔧</span> Troubleshooting</h2>
+
+      <div class="trouble-card">
+        <div class="trouble-card-header">⚡ Lamp goes unavailable in HA / Matter CASE session timeouts</div>
+        <div class="trouble-card-body">
+          <p><strong>First check:</strong> Does the lamp have an IPv6 address in UniFi client list?</p>
+          <p>If no IPv6 → the UDM SE's RA daemon (dnsmasq) has stopped broadcasting Router Advertisements. This is caused by memory pressure on the UDM SE killing the RA process.</p>
+          <p><strong>Fix:</strong> Reboot the UDM SE from the UniFi UI. After reboot, IPv6 addresses will be re-assigned via SLAAC and Matter connectivity will restore within a few minutes.</p>
+          <p><strong>Root cause:</strong> High memory usage (IPS/Suricata was the culprit — disabled in favor of Pi-hole + VLAN segmentation).</p>
+        </div>
+      </div>
+
+      <div class="trouble-card">
+        <div class="trouble-card-header">⚡ Pairing fails — Apple Home can't find the lamp</div>
+        <div class="trouble-card-body">
+          <p><strong>Check 1:</strong> Is the phone on <code>92108-2g</code> (Default VLAN 2.4GHz)? Not IoT, not 5GHz.</p>
+          <p><strong>Check 2:</strong> Are you logged into the Govee app (not just open)?</p>
+          <p><strong>Check 3:</strong> Does the lamp have an IPv6 address in UniFi? If not, reboot the UDM SE first.</p>
+          <p><strong>Check 4:</strong> Was the factory reset done in the correct order? Unplug → plug in → THEN reset.</p>
+        </div>
+      </div>
+
+      <div class="trouble-card">
+        <div class="trouble-card-header">⚡ Matter log shows repeated CASE session timeouts (Node 25)</div>
+        <div class="trouble-card-body">
+          <p>This means the device's fabric credentials are stale — the Matter Server and device have mismatched keys.</p>
+          <p><strong>Fix:</strong> Full re-pair required. Remove the device from Apple Home and HA Matter integration, then follow the pairing steps from the top.</p>
+          <p>Check Matter Server logs: <strong>Settings → Add-ons → Matter Server → Logs</strong></p>
+          <pre><code>CASESession timed out while waiting for a response
+from peer &lt;0000000000000019, 1&gt;</code></pre>
+        </div>
+      </div>
+
+      <div class="trouble-card">
+        <div class="trouble-card-header">⚡ UDM SE memory pressure / earlyoom killing processes</div>
+        <div class="trouble-card-body">
+          <p>Check available memory via SSH:</p>
+          <pre><code>free -m</code></pre>
+          <p>Available should be above 800MB comfortably. If below ~500MB, check what's consuming memory:</p>
+          <pre><code>ps aux --sort=-%mem | head -10</code></pre>
+          <p><strong>Known fix:</strong> IPS/Intrusion Prevention was disabled — it ran Suricata at ~500MB RAM constantly and earlyoom would kill the RA daemon when memory got tight. Pi-hole + VLAN segmentation provides sufficient protection without IPS overhead.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Health Checks -->
+    <section id="health-checks">
+      <h2><span class="icon">🩺</span> Health Checks</h2>
+      <p>Run these from the UDM SE SSH session if Govee/Matter devices start dropping.</p>
+
+      <div class="cmd-block">
+        <div class="cmd-label">Check IPv6 prefix delegation from AT&T</div>
+        <pre><code>ip -6 route show | grep -v fe80</code></pre>
+        <p style="font-size:0.82rem; color:var(--text-dim); margin-top:0.3rem">Should show <code>/64</code> subnets for each VLAN bridge (br0, br3, br5, br6, br7, br99)</p>
+      </div>
+
+      <div class="cmd-block">
+        <div class="cmd-label">Check RA daemon (dnsmasq) is running</div>
+        <pre><code>ps aux | grep dnsmasq | grep -v grep</code></pre>
+        <p style="font-size:0.82rem; color:var(--text-dim); margin-top:0.3rem">If no output → reboot UDM SE from UniFi UI</p>
+      </div>
+
+      <div class="cmd-block">
+        <div class="cmd-label">Check UDM SE memory health</div>
+        <pre><code>free -m
+ps aux --sort=-%mem | head -10</code></pre>
+      </div>
+
+      <div class="cmd-block">
+        <div class="cmd-label">Check Matter Server logs in HA</div>
+        <pre><code>Settings → Add-ons → Matter Server → Logs</code></pre>
+        <p style="font-size:0.82rem; color:var(--text-dim); margin-top:0.3rem">Look for CASE session errors referencing specific node IDs</p>
+      </div>
+    </section>
+
+    <!-- Background -->
+    <section id="background">
+      <h2><span class="icon">📖</span> Background & Architecture</h2>
+      <p>Govee H6022 lamps are paired via <strong>Matter over WiFi</strong> using a Multi-Admin setup — Apple Home acts as the primary commissioner, and HA joins as a secondary controller. This avoids depending on Govee's cloud integration.</p>
+
+      <p>The Matter fabric is managed by the <strong>Matter Server add-on</strong> in HA. Each device gets a Node ID in the fabric. The UDM SE handles IPv6 prefix delegation from AT&T via <code>odhcp6c</code>, and distributes Router Advertisements to VLANs via <code>dnsmasq</code>.</p>
+
+      <div class="callout callout-info">
+        <div class="callout-title">ℹ️ Why IPS was disabled</div>
+        The UDM SE runs Suricata for IPS, which consumed ~500MB RAM constantly under the <code>suricata_ubios_high.yaml</code> profile. Combined with the UniFi controller (Java, ~700MB) and MongoDB (~360MB), the system regularly ran below 500MB free. earlyoom would kill dnsmasq or related processes under pressure, dropping IPv6 RA and taking Matter devices offline. IPS was disabled in favor of Pi-hole DNS filtering + VLAN segmentation, which provides equivalent protection without the memory overhead.
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  hglahiv.github.io · Home Lab Wiki · Last updated May 2026 · <a href="#" style="color: var(--accent);">Edit on GitHub</a>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hglahiv · Home Lab Wiki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2128;
+      --border: #30363d;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --warn: #f0883e;
+      --danger: #f85149;
+      --purple: #bc8cff;
+      --teal: #39d3c3;
+      --text: #c9d1d9;
+      --text-dim: #8b949e;
+      --text-bright: #f0f6fc;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* Hero header */
+    .hero {
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      padding: 3rem 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(88,166,255,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--text-bright);
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero h1 span { color: var(--accent); }
+
+    .hero-desc {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      max-width: 560px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-stat {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 1.4rem;
+      color: var(--text-bright);
+      font-family: var(--sans);
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 0.2rem;
+    }
+
+    /* Main layout */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 3rem;
+    }
+
+    /* Section headers */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-header h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-bright);
+    }
+
+    .section-header .section-icon {
+      font-size: 1rem;
+    }
+
+    .section-header .section-count {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.1rem 0.5rem;
+      margin-left: auto;
+    }
+
+    /* Wiki grid */
+    .wiki-section { margin-bottom: 3rem; }
+
+    .wiki-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    /* Wiki card */
+    .wiki-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      text-decoration: none;
+      display: block;
+      transition: border-color 0.15s, background 0.15s, transform 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wiki-card:hover {
+      border-color: var(--accent);
+      background: var(--surface2);
+      transform: translateY(-1px);
+    }
+
+    .wiki-card.stub {
+      opacity: 0.5;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .wiki-card.stub:hover { transform: none; }
+
+    .card-accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-icon {
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-bright);
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .card-tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+
+    .card-status {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .card-status.live { color: var(--accent2); }
+    .card-status.stub { color: var(--text-dim); }
+    .card-status.wip { color: var(--warn); }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* Quick ref panel */
+    .quick-ref {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .quick-ref h3 {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .quick-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+    }
+
+    .quick-item-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.3rem;
+    }
+
+    .quick-item-value {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--accent2);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 3rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* Color themes per section */
+    .color-blue { --card-color: var(--accent); }
+    .color-green { --card-color: var(--accent2); }
+    .color-orange { --card-color: var(--warn); }
+    .color-purple { --card-color: var(--purple); }
+    .color-teal { --card-color: var(--teal); }
+
+    .wiki-card .card-accent-bar { background: var(--card-color, var(--accent)); }
+  </style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-label">hglahiv.github.io</div>
+  <h1>Home Lab <span>Wiki</span></h1>
+  <p class="hero-desc">Documentation, runbooks, and hard-won knowledge from a decade of home automation, networking, and self-hosted infrastructure in San Diego.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong>10+</strong>years of home lab</div>
+    <div class="hero-stat"><strong>5</strong>VLANs</div>
+    <div class="hero-stat"><strong>6</strong>cameras</div>
+    <div class="hero-stat"><strong>HA + Proxmox</strong>core stack</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Quick Reference -->
+  <div class="quick-ref">
+    <h3>⚡ Quick Reference — Key IPs & Services</h3>
+    <div class="quick-grid">
+      <div class="quick-item">
+        <div class="quick-item-label">Home Assistant (Proxmox VM 100)</div>
+        <div class="quick-item-value">192.168.1.60</div>
+      </div>
+      <div class="quick-item">
+        <div class="quick-item-label">Frigate NVR (VM 101)</div>
+        <div class="quick-item-value">192.168.1.61</div>
+      </div>
+      <div class="quick-item">
+        <div class="quick-item-label">Blue Iris / Funky</div>
+        <div class="quick-item-value">192.168.1.218</div>
+      </div>
+      <div class="quick-item">
+        <div class="quick-item-label">Synology NAS</div>
+        <div class="quick-item-value">192.168.1.111</div>
+      </div>
+      <div class="quick-item">
+        <div class="quick-item-label">Pi-hole Primary</div>
+        <div class="quick-item-value">192.168.1.65</div>
+      </div>
+      <div class="quick-item">
+        <div class="quick-item-label">Pi-hole Backup</div>
+        <div class="quick-item-value">192.168.1.97</div>
+      </div>
+      <div class="quick-item">
+        <div class="quick-item-label">USW Pro Max 16 PoE</div>
+        <div class="quick-item-value">192.168.1.50</div>
+      </div>
+      <div class="quick-item">
+        <div class="quick-item-label">Z-Wave JS UI</div>
+        <div class="quick-item-value">ws://a0d7b954-zwavejs2mqtt:3000</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Matter & Smart Home -->
+  <div class="wiki-section">
+    <div class="section-header">
+      <span class="section-icon">🏠</span>
+      <h2>Matter & Smart Home</h2>
+      <span class="section-count">2 articles</span>
+    </div>
+    <div class="wiki-grid">
+
+      <a href="govee-matter-pairing.html" class="wiki-card color-blue">
+        <div class="card-accent-bar"></div>
+        <div class="card-header">
+          <span class="card-icon">💡</span>
+          <span class="card-title">Govee H6022 Matter Pairing</span>
+        </div>
+        <p class="card-desc">Full pairing procedure for the Govee H6022 lamp via Matter — factory reset sequence, Apple Home commissioning, HA Multi-Admin. Includes IPv6 troubleshooting and UDM SE memory fixes.</p>
+        <div class="card-footer">
+          <span class="card-tag">matter</span>
+          <span class="card-tag">govee</span>
+          <span class="card-tag">ipv6</span>
+          <span class="card-status live"><span class="status-dot"></span>live</span>
+        </div>
+      </a>
+
+      <div class="wiki-card stub color-blue">
+        <div class="card-accent-bar"></div>
+        <div class="card-header">
+          <span class="card-icon">🔌</span>
+          <span class="card-title">SpeedShop Hubitat → HA Migration</span>
+        </div>
+        <p class="card-desc">Z-Wave migration process, entity ID cleanup, and recreating motion/tripwire lighting, lock automations, and smoke detector alerts in HA.</p>
+        <div class="card-footer">
+          <span class="card-tag">z-wave</span>
+          <span class="card-tag">hubitat</span>
+          <span class="card-tag">automations</span>
+          <span class="card-status stub"><span class="status-dot"></span>stub</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Home Assistant -->
+  <div class="wiki-section">
+    <div class="section-header">
+      <span class="section-icon">🤖</span>
+      <h2>Home Assistant</h2>
+      <span class="section-count">3 articles</span>
+    </div>
+    <div class="wiki-grid">
+
+      <div class="wiki-card stub color-green">
+        <div class="card-accent-bar"></div>
+        <div class="card-header">
+          <span class="card-icon">⚡</span>
+          <span class="card-title">Z-Wave JS UI Setup & Fix</span>
+        </div>
+        <p class="card-desc">Running Z-Wave JS UI alongside the standard addon. Fix for "Cannot lock port" error in HA 2026.5.0 — stop Z-Wave JS addon, keep Z-Wave JS UI, reconfigure integration.</p>
+        <div class="card-footer">
+          <span class="card-tag">z-wave</span>
+          <span class="card-tag">ha</span>
+          <span class="card-status stub"><span class="status-dot"></span>stub</span>
+        </div>
+      </div>
+
+      <div class="wiki-card stub color-green">
+        <div class="card-accent-bar"></div>
+        <div class="card-header">
+          <span class="card-icon">🔋</span>
+          <span class="card-title">UPS Graceful Shutdown (NUT)</span>
+        </div>
+        <p class="card-desc">APC 1500 → Proxmox NUT server → HA NUT integration architecture. Graceful VM shutdown automation on power loss.</p>
+        <div class="card-footer">
+          <span class="card-tag">proxmox</span>
+          <span class="card-tag">nut</span>
+          <span class="card-tag">ups</span>
+          <span class="card-status stub"><span class="status-dot"></span>stub</span>
+        </div>
+      </div>
+
+      <div class="wiki-card stub color-green">
+        <div class="card-accent-bar"></div>
+        <div class="card-header">
+          <span class="card-icon">📊</span>
+          <span class="card-title">Dashboard Architecture</span>
+        </div>
+        <p class="card-desc">SpeedShop AV dashboard, SpeedShop Lighting dashboard, and Security dashboard — Mushroom Cards, card-mod, and tile card patterns used throughout.</p>
+        <div class="card-footer">
+          <span class="card-tag">dashboard</span>
+          <span class="card-tag">mushroom</span>
+          <span class="card-tag">lovelace</span>
+          <span class="card-status stub"><span class="status-dot"></span>stub</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Network -->
+  <div class="wiki-section">
+    <div class="section-header">
+      <span class="section-icon">🌐</span>
+      <h2>Network (UniFi UDM SE)</h2>
+      <span class="section-count">3 articles</span>
+    </div>
+    <div class="wiki-grid">
+
+      <div class="wiki-card stub color-orange">
+        <div class="card-accent-bar"></div>
+        <div class="card-header">
+          <span class="card-icon">🏗️</span>
+          <span class="card-title">VLAN Architecture</span>
+        </div>
+        <p class="card-desc">Five VLANs — IoT (5), Kids (3), Camera (6), Guest (99), Telephony (7). Firewall rules, mDNS config, and inter-VLAN routing policy.</p>
+        <div class="card-footer">
+          <span class="card-tag">vlan</span>
+          <span class="card-tag">unifi</span>
+          <span class="card-tag">firewall</span>
+          <span class="card-status stub"><span class="status-dot"></span>stub</span>
+        </div>
+      </div>
+
+      <div class="wiki-card stub color-orange">
+        <div class="card-accent-bar"></div>
+        <div class="card-header">
+          <span class="card-icon">🔷</span>
+          <span class="card-title">IPv6 & AT&T Fiber Setup</span>
+        </div>
+        <p class="card-desc">DHCPv6-PD from AT&T via passthrough mode. UDM SE delegates /64 subnets per VLAN via dnsmasq RA. Troubleshooting earlyoom killing RA daemon.</p>
+        <div class="card-footer">
+          <span class="card-tag">ipv6</span>
+          <span class="card-tag">att</span>
+          <span class="card-tag">dnsmasq</span>
+          <span class="card-status stub"><span class="status-dot"></span>stub</span>
+        </div>
+      </div>
+
+      <div class="wiki-card stub color-orange">
+        <div class="card-accent-bar"></div>
+        <div class="card-header">
+          <span class="card-icon">🕳️</span>
+          <span class="card-title">Pi-hole + Unbound Setup</span>
+        </div>
+        <p class="card-desc">Primary (192.168.1.65) and backup (192.168.1.97) Pi-hole instances with Unbound recursive DNS. VLAN-aware DNS configuration.</p>
+        <div class="card-footer">
+          <span class="card-tag">pihole</span>
+          <span class="card-tag">dns</span>
+          <span class="card-tag">unbound</span>
+          <span class="card-status stub"><span class="status-dot"></span>stub</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Surveillance -->
+  <div class="wiki-section">
+    <div class="section-header">
+      <span class="section-icon">📹</span>
+      <h2>Surveillance & Cameras</h2>
+      <span class="section-count">2 articles</span>
+    </div>
+    <div class="wiki-grid">
+
+      <div class="wiki-card stub color-purple">
+        <div class="card-accent-bar"></div>
+        <div class="card-header">
+          <span class="card-icon">🎥</span>
+          <span class="card-title">Camera Stack Architecture</span>
+        </div>
+        <p class="card-desc">6x EmpireTech cameras on Camera VLAN. Blue Iris as primary NVR on Funky (192.168.1.218). Frigate for detection-only with NVIDIA GPU passthrough. CompreFace + Double Take for face recognition.</p>
+        <div class="card-footer">
+          <span class="card-tag">blue-iris</span>
+          <span class="card-tag">frigate</span>
+          <span class="card-tag">compreface</span>
+          <span class="card-status stub"><span class="status-dot"></span>stub</span>
+        </div>
+      </div>
+
+      <div class="wiki-card stub color-purple">
+        <div class="card-accent-bar"></div>
+        <div class="card-header">
+          <span class="card-icon">🖥️</span>
+          <span class="card-title">Blue Iris NVR (Funky) Setup</span>
+        </div>
+        <p class="card-desc">Ryzen 7 3700X, RTX 3060, 32GB DDR4. Thermal fix with Noctua NH-U12S. Storage: 3.63TB internal + UGREEN NAS RAID 5. Tailscale remote access.</p>
+        <div class="card-footer">
+          <span class="card-tag">blue-iris</span>
+          <span class="card-tag">windows</span>
+          <span class="card-tag">tailscale</span>
+          <span class="card-status stub"><span class="status-dot"></span>stub</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Infrastructure -->
+  <div class="wiki-section">
+    <div class="section-header">
+      <span class="section-icon">🖧</span>
+      <h2>Infrastructure & Proxmox</h2>
+      <span class="section-count">2 articles</span>
+    </div>
+    <div class="wiki-grid">
+
+      <div class="wiki-card stub color-teal">
+        <div class="card-accent-bar"></div>
+        <div class="card-header">
+          <span class="card-icon">⚙️</span>
+          <span class="card-title">Proxmox VE Setup</span>
+        </div>
+        <p class="card-desc">Lenovo Legion 5 (Ryzen 5, 16GB, RTX 3060 Mobile) at 192.168.1.60. HAOS as VM 100, Frigate Debian VM as VM 101. NVIDIA GPU passthrough for Frigate.</p>
+        <div class="card-footer">
+          <span class="card-tag">proxmox</span>
+          <span class="card-tag">vm</span>
+          <span class="card-tag">gpu-passthrough</span>
+          <span class="card-status stub"><span class="status-dot"></span>stub</span>
+        </div>
+      </div>
+
+      <div class="wiki-card stub color-teal">
+        <div class="card-accent-bar"></div>
+        <div class="card-header">
+          <span class="card-icon">🎵</span>
+          <span class="card-title">Home Audio Stack</span>
+        </div>
+        <p class="card-desc">WiiM Ultra → Denon AVR-S750H via RCA. Denon X4800H main room. Tidal Max + Qobuz. Music Assistant for local voice integration. Roon evaluation notes.</p>
+        <div class="card-footer">
+          <span class="card-tag">wiim</span>
+          <span class="card-tag">denon</span>
+          <span class="card-tag">tidal</span>
+          <span class="card-status stub"><span class="status-dot"></span>stub</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>hglahiv.github.io · Home Lab Wiki · San Diego, CA</span>
+  <span><a href="https://github.com/hglahiv">github.com/hglahiv</a></span>
+</footer>
+
+</body>
+</html>
