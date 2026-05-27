@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Henry Glah V — Class of 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f2540;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #faf8f3;
+    --warm-white: #fffef9;
+    --muted: #7a7060;
+    --border: rgba(201,168,76,0.25);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--navy);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── confetti canvas ── */
+  #confetti-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── hero ── */
+  .hero {
+    position: relative;
+    background: var(--navy);
+    color: var(--warm-white);
+    text-align: center;
+    padding: 80px 24px 64px;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 20% 110%, rgba(201,168,76,0.08) 0%, transparent 55%);
+  }
+
+  .hero-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 8vw, 88px);
+    font-weight: 700;
+    line-height: 1.05;
+    position: relative;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-name span {
+    display: block;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(28px, 4.5vw, 48px);
+    color: var(--gold-light);
+    margin-top: 6px;
+    letter-spacing: 0.03em;
+  }
+
+  .hero-school {
+    position: relative;
+    margin-top: 24px;
+    font-weight: 300;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .divider-gold {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 28px auto;
+    position: relative;
+  }
+
+  .hero-dates {
+    position: relative;
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── main layout ── */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── day block ── */
+  .day-block {
+    margin-top: 56px;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .day-block:nth-child(1) { animation-delay: 0.1s; }
+  .day-block:nth-child(2) { animation-delay: 0.2s; }
+  .day-block:nth-child(3) { animation-delay: 0.3s; }
+  .day-block:nth-child(4) { animation-delay: 0.4s; }
+  .day-block:nth-child(5) { animation-delay: 0.5s; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: none; }
+  }
+
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .day-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .day-date {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .day-tag {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--navy);
+    color: var(--gold);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .day-tag.star {
+    background: var(--gold);
+    color: var(--navy);
+  }
+
+  /* ── events ── */
+  .event {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    align-items: start;
+  }
+
+  .event:last-child { border-bottom: none; }
+
+  .event-time {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gold);
+    padding-top: 2px;
+    white-space: nowrap;
+  }
+
+  .event-body {}
+
+  .event-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--navy);
+    line-height: 1.35;
+  }
+
+  .event-detail {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  .event-detail a {
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: border-color 0.2s;
+  }
+
+  .event-detail a:hover {
+    border-color: var(--gold);
+  }
+
+  /* ── highlight event (ceremony) ── */
+  .event.highlight {
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.03));
+    border-radius: 10px;
+    padding: 16px;
+    margin: 4px -16px;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .event.highlight .event-title {
+    font-size: 17px;
+    color: var(--navy);
+  }
+
+  /* ── TBD / options card ── */
+  .options-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-top: 8px;
+  }
+
+  .options-card h4 {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+  }
+
+  .option-item {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--navy);
+    transition: background 0.2s, border-color 0.2s;
+    cursor: default;
+  }
+
+  .option-item:hover {
+    background: rgba(201,168,76,0.08);
+    border-color: rgba(201,168,76,0.4);
+  }
+
+  .option-emoji {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  /* ── links footer ── */
+  .links-section {
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.7s forwards;
+  }
+
+  .links-section h4 {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 10px;
+  }
+
+  .link-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: var(--navy);
+    font-size: 13px;
+    font-weight: 400;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  }
+
+  .link-pill:hover {
+    background: rgba(201,168,76,0.07);
+    border-color: rgba(201,168,76,0.4);
+    transform: translateY(-2px);
+  }
+
+  .link-pill .icon {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  /* ── footer ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <p class="hero-label">Congratulations, Graduate</p>
+  <h1 class="hero-name">
+    Henry Glah V
+    <span>Class of 2026</span>
+  </h1>
+  <p class="hero-school">Point Loma High School &nbsp;·&nbsp; San Diego, CA</p>
+  <div class="divider-gold"></div>
+  <p class="hero-dates">May 27 – June 1, 2026</p>
+</header>
+
+<!-- ── ITINERARY ── -->
+<main>
+
+  <!-- Wednesday -->
+  <section class="day-block">
+    <div class="day-header">
+      <h2 class="day-name">Wednesday</h2>
+      <span class="day-date">May 27</span>
+      <span class="day-tag">Arrival</span>
+    </div>
+
+    <div class="event">
+      <div class="event-time">1:00 PM</div>
+      <div class="event-body">
+        <div class="event-title">Mary &amp; Frank Arrive</div>
+        <div class="event-detail">Welcome to San Diego! 🎉</div>
+      </div>
+    </div>
+
+    <div class="event">
+      <div class="event-time">4:00 PM</div>
+      <div class="event-body">
+        <div class="event-title">Check-In</div>
+        <div class="event-detail">4475 Saratoga Ave, San Diego, CA 92107</div>
+      </div>
+    </div>
+
+    <div class="event">
+      <div class="event-time">Evening</div>
+      <div class="event-body">
+        <div class="event-title">Dinner — Elvira</div>
+        <div class="event-detail">Ocean Beach · <a href="https://www.ciaoelvira.com" target="_blank">ciaoelvira.com</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Thursday -->
+  <section class="day-block">
+    <div class="day-header">
+      <h2 class="day-name">Thursday</h2>
+      <span class="day-date">May 28</span>
+      <span class="day-tag star">🎓 Graduation Day</span>
+    </div>
+
+    <div class="event">
+      <div class="event-time">10:00 AM</div>
+      <div class="event-body">
+        <div class="event-title">Maya Arrives</div>
+        <div class="event-detail">Text the number you're at for pickup — bro is on his way.</div>
+      </div>
+    </div>
+
+    <div class="event highlight">
+      <div class="event-time">4:00–4:30 PM</div>
+      <div class="event-body">
+        <div class="event-title">Arrive at Point Loma High School</div>
+        <div class="event-detail">2335 Chatsworth Blvd, San Diego, CA 92106</div>
+      </div>
+    </div>
+
+    <div class="event highlight">
+      <div class="event-time">5:00 PM</div>
+      <div class="event-body">
+        <div class="event-title">🎓 Graduation Ceremony</div>
+        <div class="event-detail">Point Loma High School — caps, gowns, and proud tears.</div>
+      </div>
+    </div>
+
+    <div class="event">
+      <div class="event-time">8:00 PM</div>
+      <div class="event-body">
+        <div class="event-title">Dinner — Wonderland Ocean Pub</div>
+        <div class="event-detail">Family &amp; friends celebration · Ocean Beach · <a href="https://www.wonderlandob.com" target="_blank">wonderlandob.com</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Friday -->
+  <section class="day-block">
+    <div class="day-header">
+      <h2 class="day-name">Friday</h2>
+      <span class="day-date">May 29</span>
+      <span class="day-tag">Day 3</span>
+    </div>
+
+    <div class="event">
+      <div class="event-time">8:00 AM</div>
+      <div class="event-body">
+        <div class="event-title">Francesca Arrives! 🎉</div>
+        <div class="event-detail">The gang is all here.</div>
+      </div>
+    </div>
+
+    <div class="event">
+      <div class="event-time">Morning</div>
+      <div class="event-body">
+        <div class="event-title">Breakfast Burritos from Nico's</div>
+        <div class="event-detail">Delivered — the San Diego way.</div>
+      </div>
+    </div>
+
+    <div class="event">
+      <div class="event-time">Then what?</div>
+      <div class="event-body">
+        <div class="event-title">Choose Your Adventure</div>
+        <div class="options-card">
+          <h4>Ideas for the day</h4>
+          <div class="options-grid">
+            <div class="option-item">
+              <span class="option-emoji">🦁</span>
+              San Diego Zoo
+            </div>
+            <div class="option-item">
+              <span class="option-emoji">⚓</span>
+              USS Midway Museum
+            </div>
+            <div class="option-item">
+              <span class="option-emoji">🏔️</span>
+              Point Loma Lighthouse
+            </div>
+            <div class="option-item">
+              <span class="option-emoji">🌊</span>
+              Beach Day
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Saturday -->
+  <section class="day-block">
+    <div class="day-header">
+      <h2 class="day-name">Saturday</h2>
+      <span class="day-date">May 30</span>
+      <span class="day-tag">Day 4</span>
+    </div>
+    <div class="event">
+      <div class="event-time">All Day</div>
+      <div class="event-body">
+        <div class="event-title">Now What? 😄</div>
+        <div class="event-detail">TBD — suggestions welcome! (Padres game? Balboa Park? La Jolla?)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sunday -->
+  <section class="day-block">
+    <div class="day-header">
+      <h2 class="day-name">Sunday</h2>
+      <span class="day-date">May 31</span>
+      <span class="day-tag">Departure Day</span>
+    </div>
+    <div class="event">
+      <div class="event-time">All Day</div>
+      <div class="event-body">
+        <div class="event-title">Departures… Boo!!! 👋</div>
+        <div class="event-detail">Safe travels everyone — until next time. We'll miss you already.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Links -->
+  <div class="links-section">
+    <h4>Useful Links</h4>
+    <div class="links-grid">
+      <a class="link-pill" href="https://www.ciaoelvira.com" target="_blank">
+        <span class="icon">🍝</span> Elvira OB
+      </a>
+      <a class="link-pill" href="https://www.wonderlandob.com" target="_blank">
+        <span class="icon">🍺</span> Wonderland Ocean Pub
+      </a>
+      <a class="link-pill" href="https://zoo.sandiegozoo.org" target="_blank">
+        <span class="icon">🦁</span> San Diego Zoo
+      </a>
+      <a class="link-pill" href="https://www.midway.org" target="_blank">
+        <span class="icon">⚓</span> USS Midway Museum
+      </a>
+      <a class="link-pill" href="https://www.nps.gov/cabr/index.htm" target="_blank">
+        <span class="icon">🏔️</span> Cabrillo / Lighthouse
+      </a>
+      <a class="link-pill" href="https://www.sandiego.gov/park-and-recreation/parks/regional/balboapark" target="_blank">
+        <span class="icon">🌿</span> Balboa Park
+      </a>
+      <a class="link-pill" href="https://www.pointloma.edu" target="_blank">
+        <span class="icon">🎓</span> Point Loma HS
+      </a>
+      <a class="link-pill" href="https://maps.google.com/?q=4475+Saratoga+Ave+San+Diego+CA+92107" target="_blank">
+        <span class="icon">📍</span> Home Base Map
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Crafted with love for Henry Glah V · Class of 2026
+</footer>
+
+<script>
+/* ── confetti ── */
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, pieces = [];
+
+const COLORS = ['#c9a84c','#e8c97a','#0f2540','#7a7060','#fffef9','#d4a853'];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function Piece() {
+  this.x = Math.random() * W;
+  this.y = Math.random() * -H;
+  this.w = Math.random() * 8 + 4;
+  this.h = Math.random() * 4 + 2;
+  this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+  this.speed = Math.random() * 1.8 + 0.6;
+  this.angle = Math.random() * Math.PI * 2;
+  this.spin = (Math.random() - 0.5) * 0.08;
+  this.drift = (Math.random() - 0.5) * 0.8;
+  this.opacity = Math.random() * 0.5 + 0.4;
+}
+
+for (let i = 0; i < 90; i++) {
+  const p = new Piece();
+  p.y = Math.random() * H;
+  pieces.push(p);
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  pieces.forEach(p => {
+    ctx.save();
+    ctx.globalAlpha = p.opacity;
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.angle);
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    ctx.restore();
+    p.y += p.speed;
+    p.x += p.drift;
+    p.angle += p.spin;
+    if (p.y > H + 20) { Object.assign(p, new Piece()); }
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
