@@ -339,6 +339,50 @@
     flex-shrink: 0;
   }
 
+  /* ── webcam ── */
+  .webcam-block {
+    margin: 0 0 22px;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+  }
+
+  .webcam-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .webcam-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--navy);
+  }
+
+  .webcam-frame .hdrelay-player {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .webcam-caption {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    text-align: right;
+  }
+
   /* ── weather ── */
   .weather-section {
     margin-top: 56px;
@@ -649,6 +693,15 @@
   <!-- Links -->
   <div class="links-section">
     <h4>Useful Links</h4>
+
+    <div class="webcam-block">
+      <div class="webcam-label">🌊 Live Ocean Beach Cam</div>
+      <div class="webcam-frame">
+        <div class="hdrelay-player" data-id="5e4b5826-2602-4dfd-af89-9b6ecf4c393a"></div>
+      </div>
+      <p class="webcam-caption">Live from the OB Pier · powered by HD Relay</p>
+    </div>
+
     <div class="links-grid">
       <a class="link-pill" href="https://www.ciaoelvira.com" target="_blank">
         <span class="icon">🍝</span> Elvira OB
@@ -823,6 +876,9 @@
 <footer>
   Crafted with love for Henry Glah V · Class of 2026
 </footer>
+
+<!-- HD Relay webcam player -->
+<script src="https://manage.hdrelay.com/js/hdrelay.js" async></script>
 
 <script>
 /* ── confetti ── */
