@@ -339,6 +339,115 @@
     flex-shrink: 0;
   }
 
+  /* ── weather ── */
+  .weather-section {
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.6s forwards;
+  }
+
+  .weather-section h4 {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .weather-caption {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 22px;
+    font-style: italic;
+  }
+
+  .weather-day {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 12px;
+  }
+
+  .weather-day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .weather-day-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .weather-day-date {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .weather-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .weather-slot {
+    text-align: center;
+    padding: 14px 8px;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .weather-slot-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .weather-icon {
+    font-size: 28px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .weather-temp {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .weather-cond {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.3;
+  }
+
+  .weather-slot.empty .weather-temp {
+    color: var(--muted);
+    font-size: 18px;
+  }
+
+  @media (max-width: 480px) {
+    .weather-grid { grid-template-columns: 1fr; }
+  }
+
   /* ── footer ── */
   footer {
     position: relative;
@@ -559,6 +668,147 @@
       </a>
     </div>
   </div>
+
+  <!-- Weather -->
+  <section class="weather-section">
+    <h4>Weather Forecast · Ocean Beach 92107</h4>
+    <p class="weather-caption">Forecast as of May 27, 2026 · National Weather Service</p>
+
+    <div class="weather-day">
+      <div class="weather-day-header">
+        <span class="weather-day-name">Wednesday</span>
+        <span class="weather-day-date">May 27</span>
+      </div>
+      <div class="weather-grid">
+        <div class="weather-slot empty">
+          <div class="weather-slot-label">Morning</div>
+          <div class="weather-icon">—</div>
+          <div class="weather-temp">—</div>
+          <div class="weather-cond">Already underway</div>
+        </div>
+        <div class="weather-slot">
+          <div class="weather-slot-label">Afternoon</div>
+          <div class="weather-icon">☀️</div>
+          <div class="weather-temp">63°F</div>
+          <div class="weather-cond">Mostly Sunny</div>
+        </div>
+        <div class="weather-slot">
+          <div class="weather-slot-label">Night</div>
+          <div class="weather-icon">🌙</div>
+          <div class="weather-temp">62°F</div>
+          <div class="weather-cond">Partly Cloudy</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="weather-day">
+      <div class="weather-day-header">
+        <span class="weather-day-name">Thursday 🎓</span>
+        <span class="weather-day-date">May 28 · Graduation</span>
+      </div>
+      <div class="weather-grid">
+        <div class="weather-slot">
+          <div class="weather-slot-label">Morning</div>
+          <div class="weather-icon">☁️</div>
+          <div class="weather-temp">63°F</div>
+          <div class="weather-cond">Mostly Cloudy</div>
+        </div>
+        <div class="weather-slot">
+          <div class="weather-slot-label">Afternoon</div>
+          <div class="weather-icon">☀️</div>
+          <div class="weather-temp">64°F</div>
+          <div class="weather-cond">Sunny</div>
+        </div>
+        <div class="weather-slot">
+          <div class="weather-slot-label">Night</div>
+          <div class="weather-icon">🌙</div>
+          <div class="weather-temp">63°F</div>
+          <div class="weather-cond">Partly Cloudy</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="weather-day">
+      <div class="weather-day-header">
+        <span class="weather-day-name">Friday</span>
+        <span class="weather-day-date">May 29</span>
+      </div>
+      <div class="weather-grid">
+        <div class="weather-slot">
+          <div class="weather-slot-label">Morning</div>
+          <div class="weather-icon">☁️</div>
+          <div class="weather-temp">63°F</div>
+          <div class="weather-cond">Cloudy</div>
+        </div>
+        <div class="weather-slot">
+          <div class="weather-slot-label">Afternoon</div>
+          <div class="weather-icon">☀️</div>
+          <div class="weather-temp">64°F</div>
+          <div class="weather-cond">Mostly Sunny</div>
+        </div>
+        <div class="weather-slot">
+          <div class="weather-slot-label">Night</div>
+          <div class="weather-icon">🌙</div>
+          <div class="weather-temp">63°F</div>
+          <div class="weather-cond">Mostly Clear</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="weather-day">
+      <div class="weather-day-header">
+        <span class="weather-day-name">Saturday</span>
+        <span class="weather-day-date">May 30</span>
+      </div>
+      <div class="weather-grid">
+        <div class="weather-slot">
+          <div class="weather-slot-label">Morning</div>
+          <div class="weather-icon">☁️</div>
+          <div class="weather-temp">64°F</div>
+          <div class="weather-cond">Mostly Cloudy</div>
+        </div>
+        <div class="weather-slot">
+          <div class="weather-slot-label">Afternoon</div>
+          <div class="weather-icon">🌤️</div>
+          <div class="weather-temp">64°F</div>
+          <div class="weather-cond">Partly Sunny</div>
+        </div>
+        <div class="weather-slot">
+          <div class="weather-slot-label">Night</div>
+          <div class="weather-icon">🌙</div>
+          <div class="weather-temp">64°F</div>
+          <div class="weather-cond">Mostly Clear</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="weather-day">
+      <div class="weather-day-header">
+        <span class="weather-day-name">Sunday</span>
+        <span class="weather-day-date">May 31</span>
+      </div>
+      <div class="weather-grid">
+        <div class="weather-slot">
+          <div class="weather-slot-label">Morning</div>
+          <div class="weather-icon">🌤️</div>
+          <div class="weather-temp">64°F</div>
+          <div class="weather-cond">Partly Sunny</div>
+        </div>
+        <div class="weather-slot">
+          <div class="weather-slot-label">Afternoon</div>
+          <div class="weather-icon">☀️</div>
+          <div class="weather-temp">68°F</div>
+          <div class="weather-cond">Sunny</div>
+        </div>
+        <div class="weather-slot">
+          <div class="weather-slot-label">Night</div>
+          <div class="weather-icon">🌙</div>
+          <div class="weather-temp">65°F</div>
+          <div class="weather-cond">Mostly Clear</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
 </main>
 
