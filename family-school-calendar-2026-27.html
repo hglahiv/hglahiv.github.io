@@ -1,0 +1,219 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lahiv Family · School Year 2026–27</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16263a; --ink2:#48586b; --paper:#f4f6f9; --card:#ffffff;
+  --line:#dbe2ea; --oliver:#e4572e; --niki:#2a9d8f; --henry:#e0a83d;
+  --fam:#3d5a80; --famwash:rgba(61,90,128,.10);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:Inter,system-ui,sans-serif;line-height:1.5;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:clamp(20px,4vw,56px)}
+.eyebrow{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink2)}
+h1{font-family:"Space Grotesk",sans-serif;font-weight:700;
+  font-size:clamp(30px,5.5vw,52px);line-height:1.02;margin:.25em 0 .1em;
+  letter-spacing:-.02em}
+.sub{color:var(--ink2);max-width:60ch;margin:0 0 8px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin:18px 0 0;
+  font-size:13px;color:var(--ink2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:14px;height:14px;border-radius:4px;display:inline-block}
+
+section{margin-top:clamp(34px,6vw,60px)}
+.h2{font-family:"Space Grotesk",sans-serif;font-size:13px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink2);margin:0 0 18px;
+  display:flex;align-items:center;gap:12px}
+.h2:after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* ---- TIMELINE (signature) ---- */
+.timeline{background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:22px 22px 14px;position:relative;overflow:hidden}
+.tlhead{position:relative;height:20px;margin-left:var(--lw);
+  border-bottom:1px solid var(--line)}
+.tick{position:absolute;top:0;transform:translateX(-1px);height:100%}
+.tick span{font-family:"Space Mono",monospace;font-size:11px;color:var(--ink2);
+  position:absolute;left:4px;top:2px}
+.tick:before{content:"";position:absolute;left:0;top:0;height:8px;
+  border-left:1px solid var(--line)}
+.lanes{position:relative}
+.famband{position:absolute;top:0;bottom:18px;background:var(--famwash);
+  border-left:1px dashed var(--fam);border-right:1px dashed var(--fam);
+  z-index:0;pointer-events:auto}
+:root{--lw:128px}
+.lane{display:grid;grid-template-columns:var(--lw) 1fr;align-items:center;
+  position:relative;z-index:1;padding:9px 0}
+.lane-label{display:flex;gap:9px;align-items:center;padding-right:12px}
+.lane-label b{font-size:14px;display:block;font-weight:600}
+.lane-label small{font-size:10.5px;color:var(--ink2);display:block;line-height:1.25}
+.dot{width:11px;height:11px;border-radius:50%;flex:none;margin-top:1px}
+.track{position:relative;height:34px;background:repeating-linear-gradient(
+  90deg,#eef2f6 0 1px,transparent 1px 100%);border-radius:8px}
+.track:before{content:"";position:absolute;inset:0;border-radius:8px;
+  background:#f0f3f7}
+.blk{position:absolute;top:4px;height:26px;border-radius:6px;z-index:2;
+  display:flex;align-items:center;background:color-mix(in srgb,var(--c) 18%,white);
+  border:1px solid var(--c);overflow:hidden}
+.blk span{font-size:10.5px;font-weight:600;color:color-mix(in srgb,var(--c) 72%,black);
+  padding:0 6px;white-space:nowrap}
+.blk.break{background:color-mix(in srgb,var(--c) 30%,white)}
+.blk.edge{background:var(--c);border-color:var(--c)}
+.blk.edge span{color:#fff}
+.blk.movein{background:repeating-linear-gradient(45deg,
+  color-mix(in srgb,var(--c) 22%,white) 0 5px,white 5px 10px)}
+.blk.finals{background:#fff;border-style:dashed}
+.tlnote{font-size:11.5px;color:var(--ink2);margin:10px 0 2px;
+  font-family:"Space Mono",monospace}
+
+/* ---- FAMILY WINDOWS ---- */
+.windows{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px}
+.wcard{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:18px;position:relative;border-top:3px solid var(--fam)}
+.wtop{display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:10px}
+.wtag{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;background:var(--fam);color:#fff;padding:3px 8px;
+  border-radius:20px}
+.wdate{font-family:"Space Mono",monospace;font-size:12px;color:var(--ink)}
+.wcard h3{font-family:"Space Grotesk",sans-serif;margin:0 0 4px;font-size:19px}
+.wcard p{margin:0;font-size:13px;color:var(--ink2)}
+.note{font-size:13px;color:var(--ink2);margin-top:14px;
+  border-left:3px solid var(--niki);padding-left:12px}
+
+/* ---- DETAIL TABLES ---- */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:16px}
+.scol{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  overflow:hidden}
+.shead{padding:13px 16px;border-bottom:1px solid var(--line);
+  border-top:3px solid var(--c)}
+.shead b{font-family:"Space Grotesk",sans-serif;font-size:16px}
+.shead small{display:block;color:var(--ink2);font-size:11.5px}
+.scol table{width:100%;border-collapse:collapse}
+.scol td{padding:8px 16px;border-bottom:1px solid #eef2f6;font-size:13px;
+  vertical-align:top}
+.scol tr:last-child td{border-bottom:none}
+.dt{font-family:"Space Mono",monospace;font-size:11.5px;color:var(--ink);
+  white-space:nowrap;width:42%}
+.kbadge{font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;
+  padding:1px 6px;border-radius:10px;vertical-align:middle;font-weight:700}
+.kbadge.break{background:#eaf5f3;color:#1f7a6e}
+.kbadge.holiday{background:#f1f4f8;color:#566}
+.kbadge.finals{background:#fff4e0;color:#9a6a12}
+.kbadge.movein{background:#fdeee8;color:#b23c19}
+.moveout{background:var(--card);border:1px dashed var(--henry);border-radius:14px;
+  padding:16px 18px;margin-top:16px;font-size:13px;color:var(--ink2)}
+.moveout b{color:var(--ink)}
+footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:11.5px;color:var(--ink2);font-family:"Space Mono",monospace;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media (max-width:560px){
+  :root{--lw:74px}
+  .lane-label small{display:none}
+  .blk span{font-size:9px}
+}
+@media print{body{background:#fff} .timeline,.wcard,.scol{break-inside:avoid}}
+</style></head><body>
+<div class="wrap">
+  <div class="eyebrow">Lahiv Family · San Diego</div>
+  <h1>School Year 2026–27,<br>three calendars, one view.</h1>
+  <p class="sub">Start and end dates, every break, and — the point of the whole thing —
+  the windows where all three are off at once. Those are your family travel windows.</p>
+  <div class="legend">
+    <span><i style="background:var(--oliver)"></i>Oliver</span>
+    <span><i style="background:var(--niki)"></i>Niki</span>
+    <span><i style="background:var(--henry)"></i>Henry</span>
+    <span><i style="background:var(--famwash);border:1px dashed var(--fam)"></i>Everyone free</span>
+  </div>
+
+  <section>
+    <div class="h2">The year at a glance</div>
+    <div class="timeline">
+      <div class="tlhead"><div class="tick" style="left:0.0%"><span>Aug</span></div><div class="tick" style="left:9.309%"><span>Sep</span></div><div class="tick" style="left:18.318%"><span>Oct</span></div><div class="tick" style="left:27.628%"><span>Nov</span></div><div class="tick" style="left:36.637%"><span>Dec</span></div><div class="tick" style="left:45.946%"><span>Jan</span></div><div class="tick" style="left:55.255%"><span>Feb</span></div><div class="tick" style="left:63.664%"><span>Mar</span></div><div class="tick" style="left:72.973%"><span>Apr</span></div><div class="tick" style="left:81.982%"><span>May</span></div><div class="tick" style="left:91.291%"><span>Jun</span></div></div>
+      <div class="lanes">
+        <div style="position:absolute;inset:0;margin-left:var(--lw)"><div class="famband" style="left:34.234%;width:2.1019999999999968%" title="Thanksgiving: All three off Nov 23–27 (+ weekend)."></div><div class="famband" style="left:42.643%;width:4.503999999999998%" title="Winter break: The big one — ~2 weeks, incl. Christmas & New Year's."></div><div class="famband" style="left:72.072%;width:1.5019999999999953%" title="Spring break: One week everyone overlaps (Niki is also off the prior week)."></div><div class="famband" style="left:95.495%;width:4.804999999999993%" title="Summer opens: Once Niki finishes Jun 15, all three are free."></div></div>
+        
+      <div class="lane">
+        <div class="lane-label"><span class="dot" style="background:#e4572e"></span>
+          <div><b>Oliver</b><small>Point Loma HS · San Diego Unified</small></div></div>
+        <div class="track"><div class="blk edge" style="left:2.703%;width:0.6%;--c:#e4572e"><span>First day</span></div><div class="blk holiday" style="left:21.622%;width:0.6%;--c:#e4572e"><span>No school</span></div><div class="blk break" style="left:34.234%;width:1.5019999999999953%;--c:#e4572e"><span>Thanksgiving</span></div><div class="blk break" style="left:42.643%;width:4.503999999999998%;--c:#e4572e"><span>Winter break</span></div><div class="blk holiday" style="left:58.559%;width:1.2010000000000005%;--c:#e4572e"><span>Presidents'</span></div><div class="blk holiday" style="left:65.766%;width:0.6%;--c:#e4572e"><span>No school</span></div><div class="blk break" style="left:72.072%;width:1.5019999999999953%;--c:#e4572e"><span>Spring break</span></div><div class="blk edge" style="left:89.489%;width:0.6%;--c:#e4572e"><span>Last day</span></div></div>
+      </div>
+      <div class="lane">
+        <div class="lane-label"><span class="dot" style="background:#2a9d8f"></span>
+          <div><b>Niki</b><small>Cajon Valley Union SD</small></div></div>
+        <div class="track"><div class="blk edge" style="left:3.604%;width:0.6%;--c:#2a9d8f"><span>First day</span></div><div class="blk holiday" style="left:18.619%;width:0.6%;--c:#2a9d8f"><span>No school</span></div><div class="blk break" style="left:33.333%;width:2.4029999999999987%;--c:#2a9d8f"><span>Thanksgiving</span></div><div class="blk break" style="left:42.643%;width:6.606000000000002%;--c:#2a9d8f"><span>Winter break</span></div><div class="blk holiday" style="left:58.559%;width:1.2010000000000005%;--c:#2a9d8f"><span>Presidents'</span></div><div class="blk break" style="left:69.97%;width:3.603999999999999%;--c:#2a9d8f"><span>Spring break</span></div><div class="blk edge" style="left:95.495%;width:0.6%;--c:#2a9d8f"><span>Last day</span></div></div>
+      </div>
+      <div class="lane">
+        <div class="lane-label"><span class="dot" style="background:#e0a83d"></span>
+          <div><b>Henry</b><small>CSU Monterey Bay</small></div></div>
+        <div class="track"><div class="blk movein" style="left:5.405%;width:0.601%;--c:#e0a83d"><span>Move-in</span></div><div class="blk edge" style="left:6.907%;width:0.6%;--c:#e0a83d"><span>Classes begin</span></div><div class="blk break" style="left:34.234%;width:1.5019999999999953%;--c:#e0a83d"><span>Fall break</span></div><div class="blk finals" style="left:40.541%;width:1.5010000000000048%;--c:#e0a83d"><span>Finals</span></div><div class="blk break" style="left:42.042%;width:11.110999999999997%;--c:#e0a83d"><span>Winter / between terms</span></div><div class="blk movein" style="left:52.252%;width:0.6%;--c:#e0a83d"><span>Move-in</span></div><div class="blk edge" style="left:53.153%;width:0.6%;--c:#e0a83d"><span>Classes begin</span></div><div class="blk break" style="left:72.072%;width:1.5019999999999953%;--c:#e0a83d"><span>Spring break</span></div><div class="blk finals" style="left:86.787%;width:1.5009999999999906%;--c:#e0a83d"><span>Finals</span></div><div class="blk edge" style="left:88.288%;width:0.6%;--c:#e0a83d"><span>Commencement</span></div></div>
+      </div>
+      </div>
+      <div class="tlnote">Shaded vertical columns = all three off together. Hatched = move-in. Dashed outline = finals.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h2">Family travel windows</div>
+    <div class="windows">
+      <div class="wcard">
+        <div class="wtop"><span class="wtag">Best</span><span class="wdate">Nov 23–29, 2026</span></div>
+        <h3>Thanksgiving</h3><p>All three off Nov 23–27 (+ weekend).</p>
+      </div>
+      <div class="wcard">
+        <div class="wtop"><span class="wtag">Strong</span><span class="wdate">Dec 21 – Jan 4, 2027</span></div>
+        <h3>Winter break</h3><p>The big one — ~2 weeks, incl. Christmas & New Year's.</p>
+      </div>
+      <div class="wcard">
+        <div class="wtop"><span class="wtag">Good</span><span class="wdate">Mar 29 – Apr 2, 2027</span></div>
+        <h3>Spring break</h3><p>One week everyone overlaps (Niki is also off the prior week).</p>
+      </div>
+      <div class="wcard">
+        <div class="wtop"><span class="wtag">Open</span><span class="wdate">Jun 15–30, 2027</span></div>
+        <h3>Summer opens</h3><p>Once Niki finishes Jun 15, all three are free.</p>
+      </div></div>
+    <p class="note"><b>Presidents' weekend</b> — Feb 12–15, 2027. Oliver + Niki only — Henry has class.</p>
+    <p class="note" style="border-color:var(--henry)">Trip fit: Hawaii works year-round, so the <b>winter</b> window
+    (Maui / Big Island over the holidays) is the natural one. The Italian Riviera is a warm-season coast — it lines up best with the
+    <b>summer</b> window after June 15. Your existing Bora Bora dates (Oct 11–19) fall during school for all three.</p>
+  </section>
+
+  <section>
+    <div class="h2">Every date, by student</div>
+    <div class="cols">
+      <div class="scol">
+        <div class="shead" style="--c:#e4572e">
+          <b>Oliver</b><small>Point Loma HS · San Diego Unified</small></div>
+        <table><tr><td class="dt">Aug 10, 2026</td><td>First day </td></tr><tr><td class="dt">Oct 12, 2026</td><td>No school <span class="kbadge holiday">Day off</span></td></tr><tr><td class="dt">Nov 23–27, 2026</td><td>Thanksgiving <span class="kbadge break">Break</span></td></tr><tr><td class="dt">Dec 21 – Jan 4, 2027</td><td>Winter break <span class="kbadge break">Break</span></td></tr><tr><td class="dt">Feb 12–15, 2027</td><td>Presidents' <span class="kbadge holiday">Day off</span></td></tr><tr><td class="dt">Mar 8, 2027</td><td>No school <span class="kbadge holiday">Day off</span></td></tr><tr><td class="dt">Mar 29 – Apr 2, 2027</td><td>Spring break <span class="kbadge break">Break</span></td></tr><tr><td class="dt">May 26, 2027</td><td>Last day </td></tr></table>
+      </div>
+      <div class="scol">
+        <div class="shead" style="--c:#2a9d8f">
+          <b>Niki</b><small>Cajon Valley Union SD</small></div>
+        <table><tr><td class="dt">Aug 13, 2026</td><td>First day </td></tr><tr><td class="dt">Oct 2, 2026</td><td>No school <span class="kbadge holiday">Day off</span></td></tr><tr><td class="dt">Nov 20–27, 2026</td><td>Thanksgiving <span class="kbadge break">Break</span></td></tr><tr><td class="dt">Dec 21 – Jan 11, 2027</td><td>Winter break <span class="kbadge break">Break</span></td></tr><tr><td class="dt">Feb 12–15, 2027</td><td>Presidents' <span class="kbadge holiday">Day off</span></td></tr><tr><td class="dt">Mar 22 – Apr 2, 2027</td><td>Spring break <span class="kbadge break">Break</span></td></tr><tr><td class="dt">Jun 15, 2027</td><td>Last day </td></tr></table>
+      </div>
+      <div class="scol">
+        <div class="shead" style="--c:#e0a83d">
+          <b>Henry</b><small>CSU Monterey Bay</small></div>
+        <table><tr><td class="dt">Aug 19–20, 2026</td><td>Move-in <span class="kbadge movein">Move-in</span></td></tr><tr><td class="dt">Aug 24, 2026</td><td>Classes begin </td></tr><tr><td class="dt">Nov 23–27, 2026</td><td>Fall break <span class="kbadge break">Break</span></td></tr><tr><td class="dt">Dec 14–18, 2026</td><td>Finals <span class="kbadge finals">Finals</span></td></tr><tr><td class="dt">Dec 19 – Jan 24, 2027</td><td>Winter / between terms <span class="kbadge break">Break</span></td></tr><tr><td class="dt">Jan 22, 2027</td><td>Move-in <span class="kbadge movein">Move-in</span></td></tr><tr><td class="dt">Jan 25, 2027</td><td>Classes begin </td></tr><tr><td class="dt">Mar 29 – Apr 2, 2027</td><td>Spring break <span class="kbadge break">Break</span></td></tr><tr><td class="dt">May 17–21, 2027</td><td>Finals <span class="kbadge finals">Finals</span></td></tr><tr><td class="dt">May 22, 2027</td><td>Commencement </td></tr></table>
+      </div></div>
+    <div class="moveout">
+      <b>Henry — move-out.</b> The CSUMB academic calendar lists move-<i>in</i> (Aug 19–20 fall, Jan 22 spring)
+      but not move-<i>out</i>; halls typically close within ~24 hours of your last final. Working estimates:
+      <b>~Dec 19, 2026</b> after fall finals, and <b>~May 23, 2027</b> after spring finals / commencement.
+      Confirm both with CSUMB Housing &amp; Residential Life — these are the dates marked "estimate" in the calendar file.
+    </div>
+  </section>
+
+  <footer>
+    <span>Built from: Cajon Valley · San Diego Unified · CSU Monterey Bay official 2026–27 calendars</span>
+    <span>Verify changes against each district before booking</span>
+  </footer>
+</div>
+</body></html>
