@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SpeedShop — Subpanel Circuit Map</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:#0c0c0c;
+  --surface:#151515;
+  --surface2:#1c1c1c;
+  --border:#252525;
+  --accent:#f5a623;
+  --accent-dim:#a06a10;
+  --red:#e24b4a;
+  --green:#3db87a;
+  --warn:#e2a44a;
+  --blue:#5b9bd5;
+  --text:#d4d4d4;
+  --muted:#555;
+  --mono:'Share Tech Mono',monospace;
+  --sans:'Barlow Condensed',sans-serif;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  min-height:100vh;
+  padding:0;
+}
+
+/* ── TOP BAR ── */
+.topbar{
+  background:#111;
+  border-bottom:1px solid #1e1e1e;
+  padding:14px 28px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.topbar-logo{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+.topbar-sep{color:#2a2a2a;font-size:20px;}
+.topbar-sub{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--muted);
+  letter-spacing:2px;
+}
+.topbar-date{
+  margin-left:auto;
+  font-family:var(--mono);
+  font-size:10px;
+  color:#333;
+  letter-spacing:1px;
+}
+
+/* ── PAGE LAYOUT ── */
+.page{
+  max-width:900px;
+  margin:0 auto;
+  padding:32px 24px 60px;
+}
+
+/* ── SECTION HEADER ── */
+.section-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+.section-eyebrow{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:3px;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+
+/* ── STATUS LEGEND ── */
+.legend{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-bottom:28px;
+  padding:10px 14px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:5px;
+}
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--muted);
+}
+.ldot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* ── BREAKER CARD ── */
+.breaker{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  margin-bottom:16px;
+  overflow:hidden;
+}
+.breaker.b-green{border-color:#3db87a33;}
+.breaker.b-future{border:1.5px dashed #3db87a33;background:#0d1a0f;}
+
+.breaker-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 18px 12px;
+  border-bottom:1px solid var(--border);
+  flex-wrap:wrap;
+  gap:8px;
+}
+.bh-label{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:2px;
+  color:var(--muted);
+  text-transform:uppercase;
+  width:100%;
+  margin-bottom:2px;
+}
+.bh-name{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--accent);
+  flex:1;
+  line-height:1;
+}
+.bh-name.future-name{color:var(--green);}
+
+.badge{
+  font-family:var(--mono);
+  font-size:9px;
+  padding:2px 8px;
+  border-radius:3px;
+  border:1px solid;
+  white-space:nowrap;
+}
+.badge-gray{background:#1a1a1a;border-color:#2e2e2e;color:#666;}
+.badge-green{background:#0a1f12;border-color:#3db87a44;color:var(--green);}
+.badge-warn{background:#1f1500;border-color:#e2a44a44;color:var(--warn);}
+.badge-blue{background:#0a1525;border-color:#5b9bd544;color:var(--blue);}
+.badge-future{background:#0a1a0f;border-color:#3db87a33;color:#3db87a88;}
+
+/* ── CIRCUIT ROWS ── */
+.circuits{padding:4px 0;}
+
+.circuit-row{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  padding:10px 18px;
+  border-top:1px solid #191919;
+}
+.circuit-row:first-child{border-top:none;}
+
+.cdot{
+  width:9px;height:9px;
+  border-radius:50%;
+  flex-shrink:0;
+  margin-top:5px;
+  border:1.5px solid #333;
+  background:#1a1a1a;
+}
+.cdot.ok{background:var(--green);border-color:var(--green);box-shadow:0 0 6px var(--green);}
+.cdot.warn{background:var(--warn);border-color:var(--warn);box-shadow:0 0 6px var(--warn);}
+.cdot.future{background:#0a1a0f;border-color:#3db87a44;}
+
+.cinfo{flex:1;}
+.cname{
+  font-size:15px;
+  font-weight:700;
+  color:#ccc;
+  letter-spacing:0.5px;
+  line-height:1.3;
+}
+.cname.future-cname{color:#3db87a99;}
+.cdetail{
+  font-family:var(--mono);
+  font-size:10px;
+  color:var(--muted);
+  margin-top:3px;
+  line-height:1.6;
+}
+.cflag{
+  font-family:var(--mono);
+  font-size:10px;
+  margin-top:3px;
+  line-height:1.5;
+}
+.cflag.green{color:var(--green);}
+.cflag.warn{color:var(--warn);}
+.cflag.red{color:var(--red);}
+.cflag.blue{color:var(--blue);}
+
+/* ── JUNCTION BOX ── */
+.jbox{
+  margin:4px 18px 10px 39px;
+  background:#0a1525;
+  border:1px solid #5b9bd522;
+  border-radius:5px;
+  padding:10px 14px;
+}
+.jbox-label{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:3px;
+  color:#5b9bd5aa;
+  margin-bottom:8px;
+  text-transform:uppercase;
+}
+.jbox-row{
+  font-family:var(--mono);
+  font-size:11px;
+  color:#5b9bd577;
+  padding:3px 0;
+  display:flex;
+  align-items:flex-start;
+  gap:6px;
+}
+.jbox-row::before{content:'⊢';color:#5b9bd544;flex-shrink:0;}
+
+/* ── CHAIN ── */
+.chain{
+  margin:0 18px 10px 39px;
+  border-left:1.5px dashed #252525;
+  padding-left:14px;
+}
+.chain-item{
+  font-family:var(--mono);
+  font-size:11px;
+  color:#444;
+  padding:3px 0;
+  position:relative;
+}
+.chain-item::before{content:'→';position:absolute;left:-18px;color:#333;}
+.chain-item.warn{color:var(--warn);}
+
+/* ── COMPLETED ACTIONS ── */
+.completed-section{
+  margin-top:28px;
+  background:var(--surface);
+  border:1px solid #3db87a22;
+  border-radius:8px;
+  padding:16px 18px;
+}
+.completed-label{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:3px;
+  color:var(--green);
+  margin-bottom:10px;
+  text-transform:uppercase;
+}
+.completed-item{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:5px 0;
+  border-top:1px solid #1a1a1a;
+}
+.completed-item:first-of-type{border-top:none;}
+.check-icon{
+  width:15px;height:15px;
+  background:var(--green);
+  border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  margin-top:1px;
+}
+.check-icon::after{content:'✓';font-size:9px;color:#000;font-weight:800;}
+.completed-text{
+  font-family:var(--mono);
+  font-size:11px;
+  color:#3db87a99;
+  line-height:1.5;
+}
+
+/* ── OPEN ITEMS ── */
+.open-section{
+  margin-top:12px;
+  background:var(--surface);
+  border:1px solid #1f1f1f;
+  border-radius:8px;
+  padding:16px 18px;
+}
+.open-label{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:3px;
+  color:var(--muted);
+  margin-bottom:10px;
+  text-transform:uppercase;
+}
+.open-item{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  padding:5px 0;
+  border-top:1px solid #191919;
+}
+.open-item:first-of-type{border-top:none;}
+.open-box{
+  width:15px;height:15px;
+  border:1px solid #333;
+  border-radius:3px;
+  flex-shrink:0;
+  margin-top:1px;
+}
+.open-text{
+  font-family:var(--mono);
+  font-size:11px;
+  color:#555;
+  line-height:1.5;
+  flex:1;
+}
+.ptag{
+  font-size:9px;
+  padding:1px 6px;
+  border-radius:2px;
+  border:1px solid;
+  margin-left:6px;
+  white-space:nowrap;
+}
+.p-low{background:#0a1a0f;color:var(--green);border-color:#3db87a33;}
+
+/* ── NOTES ── */
+.notes-section{
+  margin-top:12px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:16px 18px;
+}
+.notes-label{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:3px;
+  color:var(--muted);
+  margin-bottom:8px;
+  text-transform:uppercase;
+}
+.notes-body{
+  font-family:var(--mono);
+  font-size:11px;
+  color:#4a4a4a;
+  line-height:1.8;
+}
+
+/* ── FOOTER ── */
+.footer{
+  margin-top:40px;
+  padding-top:16px;
+  border-top:1px solid #1a1a1a;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.footer-text{
+  font-family:var(--mono);
+  font-size:10px;
+  color:#2a2a2a;
+  letter-spacing:1px;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">SpeedShop</div>
+  <div class="topbar-sep">|</div>
+  <div class="topbar-sub">Subpanel Circuit Map</div>
+  <div class="topbar-date">Last updated: 2026 · v4 FINAL</div>
+</div>
+
+<div class="page">
+
+  <!-- legend -->
+  <div class="legend">
+    <div class="legend-item"><div class="ldot" style="background:var(--green);box-shadow:0 0 4px var(--green)"></div>confirmed & active</div>
+    <div class="legend-item"><div class="ldot" style="background:var(--warn);box-shadow:0 0 4px var(--warn)"></div>temporary / monitor</div>
+    <div class="legend-item"><div class="ldot" style="background:#0a1a0f;border:1.5px solid #3db87a44"></div>future / unpopulated</div>
+    <div class="legend-item"><div class="ldot" style="background:#1a1a1a;border:1.5px solid #333"></div>unknown</div>
+  </div>
+
+  <!-- ── BREAKER A ── -->
+  <div class="breaker b-green">
+    <div class="breaker-head">
+      <div class="bh-label">Breaker A &nbsp;·&nbsp; Poles 1 &amp; 4 &nbsp;·&nbsp; Mackey's circuit</div>
+      <div class="bh-name">Computer</div>
+      <div class="badge badge-gray">15A</div>
+      <div class="badge badge-green">✓ isolated</div>
+    </div>
+    <div class="circuits">
+      <div class="circuit-row">
+        <div class="cdot ok"></div>
+        <div class="cinfo">
+          <div class="cname">Computer outlet</div>
+          <div class="cdetail">UPS → computer gear &nbsp;·&nbsp; Power strip → peripherals (consolidate onto UPS)</div>
+          <div class="cflag green">✓ Only load on this circuit — fully isolated</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── BREAKER B ── -->
+  <div class="breaker">
+    <div class="breaker-head">
+      <div class="bh-label">Breaker B &nbsp;·&nbsp; Poles 2 &amp; 3</div>
+      <div class="bh-name">AV / Shop / Exterior</div>
+      <div class="badge badge-gray">15A + 10A</div>
+      <div class="badge badge-green">✓ mapped &amp; rewired</div>
+    </div>
+    <div class="circuits">
+
+      <div class="circuit-row">
+        <div class="cdot ok"></div>
+        <div class="cinfo">
+          <div class="cname">AV rack / entertainment</div>
+          <div class="cdetail">Receiver, displays, streaming gear</div>
+        </div>
+      </div>
+
+      <div class="circuit-row">
+        <div class="cdot ok"></div>
+        <div class="cinfo">
+          <div class="cname">Kegerator</div>
+          <div class="cdetail">Dedicated outlet — confirmed on this breaker</div>
+        </div>
+      </div>
+
+      <div class="circuit-row">
+        <div class="cdot ok"></div>
+        <div class="cinfo">
+          <div class="cname">Work Track Light</div>
+          <div class="cdetail">Shop lighting — confirmed on this breaker</div>
+        </div>
+      </div>
+
+      <div class="circuit-row">
+        <div class="cdot ok"></div>
+        <div class="cinfo">
+          <div class="cname">Shop outlets</div>
+          <div class="cdetail">General use — tools, misc</div>
+        </div>
+      </div>
+
+      <div class="circuit-row">
+        <div class="cdot ok"></div>
+        <div class="cinfo">
+          <div class="cname">New double-gang junction box</div>
+          <div class="cdetail">Feeds both exterior GFCIs — Breaker B homerun — ✓ installed</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="jbox">
+      <div class="jbox-label">Junction Box — Breaker B Feed — ✓ Installed</div>
+      <div class="jbox-row">South exterior GFCI → daisy-chain → interior keg-adjacent outlet (temp/tools) — ✓ rewired</div>
+      <div class="jbox-row">West exterior GFCI — Rachio sprinkler — rewired off computer outlet — ✓ complete</div>
+    </div>
+
+
+  </div>
+
+  <!-- ── BREAKER C ── -->
+  <div class="breaker b-future">
+    <div class="breaker-head">
+      <div class="bh-label">Breaker C &nbsp;·&nbsp; Unpopulated &nbsp;·&nbsp; Future development</div>
+      <div class="bh-name future-name">Future Circuit</div>
+      <div class="badge badge-future">slot ready</div>
+    </div>
+    <div class="circuits">
+      <div class="circuit-row">
+        <div class="cdot future"></div>
+        <div class="cinfo">
+          <div class="cname future-cname">Dedicated kegerator / freezer circuit</div>
+          <div class="cdetail">20A homerun from panel — proper dedicated appliance circuit</div>
+          <div class="cflag blue">→ Active project — pending electrician</div>
+        </div>
+      </div>
+      <div class="circuit-row">
+        <div class="cdot future"></div>
+        <div class="cinfo">
+          <div class="cname future-cname">Relocate interior keg-adjacent outlet</div>
+          <div class="cdetail">Break GFCI daisy chain — dedicated homerun, no exterior dependency</div>
+        </div>
+      </div>
+      <div class="circuit-row">
+        <div class="cdot future"></div>
+        <div class="cinfo">
+          <div class="cname future-cname">New outlet + lighting fixture</div>
+          <div class="cdetail">Additional capacity — 20A homerun</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COMPLETED ── -->
+  <div class="completed-section">
+    <div class="completed-label">✓ Completed work</div>
+    <div class="completed-item">
+      <div class="check-icon"></div>
+      <div class="completed-text">Installed double-gang junction box — Breaker B feed — south + west exterior GFCIs wired through</div>
+    </div>
+    <div class="completed-item">
+      <div class="check-icon"></div>
+      <div class="completed-text">Rewired west exterior outlet (Rachio) — disconnected from computer outlet, now on Breaker B via junction box</div>
+    </div>
+    <div class="completed-item">
+      <div class="check-icon"></div>
+      <div class="completed-text">Rewired interior keg-adjacent outlet — off GFCI daisy chain, now properly on Breaker B</div>
+    </div>
+    <div class="completed-item">
+      <div class="check-icon"></div>
+      <div class="completed-text">Computer outlet isolated on Breaker A — clean single-circuit separation achieved</div>
+    </div>
+    <div class="completed-item">
+      <div class="check-icon"></div>
+      <div class="completed-text">Circuit mapping completed — all outlets identified, documented, and verified</div>
+    </div>
+  </div>
+
+  <!-- ── OPEN ── -->
+  <div class="open-section">
+    <div class="open-label">Open — Breaker C scope</div>
+    <div class="open-item">
+      <div class="open-box"></div>
+      <div class="open-text">Dedicated kegerator/freezer circuit — 20A homerun from Breaker C <span class="ptag p-low">PROJECT</span></div>
+    </div>
+
+  </div>
+
+  <!-- ── NOTES ── -->
+  <div class="notes-section">
+    <div class="notes-label">Notes</div>
+    <div class="notes-body">
+      Circuit mapping completed 2026. Two 2-pole breakers confirmed. Breaker A (1&amp;4, Mackey's circuit) is fully isolated to the computer outlet — UPS-backed. Breaker B (2&amp;3) carries AV rack, kegerator, work track light, shop outlets, and both exterior GFCIs through the new junction box. South exterior GFCI still daisy-chains to interior keg-adjacent outlet — flagged for temporary use (vacuum/tools) until Breaker C is populated. West exterior GFCI (Rachio sprinkler) successfully rewired off computer circuit via junction box. Breaker C slot is ready — dedicated kegerator/freezer circuit is the primary future project on this breaker.
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-text">SpeedShop &nbsp;·&nbsp; Subpanel Circuit Map &nbsp;·&nbsp; Point Loma, San Diego</div>
+    <div class="footer-text">v4 FINAL &nbsp;·&nbsp; 2026</div>
+  </div>
+
+</div>
+</body>
+</html>
